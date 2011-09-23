@@ -1,0 +1,188 @@
+============================================================================
+ASIX AX88178 USB 2.0 Gigabit Ethernet Network Adapter
+ASIX AX88772 USB 2.0 Fast Ethernet Network Adapter
+ASIX AX88772A USB 2.0 Fast Ethernet Network Adapter
+ASIX AX88760 USB 2.0 MTT HUB and USB 2.0 to Fast Ethernet Combo Controller
+ASIX AX88772B USB 2.0 Fast Ethernet Network Adapter
+Driver Compilation & Configuration on the Linux
+============================================================================
+
+This driver has been verified on kernel versions from 2.6.14 to 2.6.38.
+
+==================
+Revision History :
+==================
+Version 4.1.0		Mar. 15, 2011
+ * Added more vendor and product IDs.
+
+Version 4.0.0		Feb. 22, 2011
+ * Integrated usbnet.c into this driver.
+
+Version 3.6.0		Oct. 28, 2010
+ * Added conditional compilation flag "AX_FORCE_BUFF_ALIGN" for double word
+   alignment.
+ * Added conditional compilation flag "AX_772BHW_CHECKSUM" for IP header double
+   word alignment.
+ * Refined whole USB buffers with double word alignment.
+
+Version 3.5.0		Sep. 15, 2010
+ * Corrected the parameter "supports_gmii" of AX88178 MII structure.
+ * Corrected AX88178 PHY media mode check function.
+
+Version 3.4.0		Aug. 16, 2010
+ * Fixups for compilation issues in kernel version 2.6.35.
+ * Corrected PHY reset sequence for MARVELL M88E1111 RevB2.
+
+Version 3.3.0		Aug. 03, 2010
+ * Added Vitess PHY 8601 support.
+ * Refined AX88178 PHY initialization functions.
+ * Fixups for compilation issues in kernel version 2.6.29.
+ * Fixups for rx_fixup and tx_fixup functions.
+ * Fixups for AX88772B initialization function.
+ * Added validation of necessary header file "usbnet.h" in Makefile.
+
+Version 3.2.0		June. 03, 2010
+ * Fixups for compilation issues in kernel version 2.6.15.
+
+Version 3.1.0		May. 18, 2010
+ * Corrected procedures of reading EEPROM data.
+
+Version 3.0.0		May. 11, 2010
+ * Added to support AX88772B.
+ * Corrected initialization of Realtek PHY.
+ * Added to support MAC address replacement.
+
+Version 2.6.0		Dec. 18, 2009
+ * Added AX88772A Power Saving Setting by EEPROM offset 17h support.
+ * Added AX88772 Default Power Saving function support.
+
+Version 2.5.0		Dec. 01, 2009
+ * Corrected Realtek PHY reset function.
+
+Version 2.4.0		Nov. 26, 2009
+ * Added to reset Realtek PHY via GPIO2 at initialization stage.
+ * Added to print information of driver version at initialization stage.
+ * Fixups for compilation issues in kernel version 2.6.30.
+
+Version 2.3.0		Oct. 14, 2009
+ * Corrected LED setting for Realtek 8211CL PHY.
+
+Version 2.2.0		Sep. 18, 2009
+ * Fixups for compilation issues in kernel version 2.6.19 or earlier.
+ * Increased AX88178 receive buffer size for performance improvement.
+
+Version 2.1.0		Sep. 14, 2009
+ * Added Realtek PHY support.
+ * Added EDIMAX LED support.
+
+Version 2.0.0		July. 02, 2009
+ * Modified PHY power process routine from common work queue to the
+   driver specific work queue.
+ * Fixups for compilation issues in kernel version 2.6.20.
+
+Version 1.9.0		May. 14, 2009
+ * Fixups for packet transmission on big-endian platform.
+
+Version 1.8.0		Apr. 27, 2009
+ * Chenged number rule from Major.Special.Minor to Major.Minor.Special .
+ * Fixups PHY power down and power up sequence.
+
+Version 1.0.7		Mar. 17, 2009
+ * Added PHY power down and power up sequence.
+
+Version 1.0.6		Nov. 06, 2008
+ * Fixups for compilation issues in kernel versions 2.6.25 and later.
+
+Version 1.0.5           Sep. 26, 2007
+ * Added to support AX88772A
+ * Fixups for compilation issues in kernel version 2.6.22.
+
+Version 1.0.4           Sep. 03, 2007
+ * Corrected the default value of receive filter.
+ * Corrected the value of IPG register.
+
+Version 1.0.3           Oct. 23, 2006
+ * Fixed broken initialization on big-endian.
+
+Version 1.0.2		Sep. 22, 2006
+ * Fixed bug in function set_media.
+
+Version	1.0.1		Sep. 20, 2006
+ * Fixups for compilation issues in newest kernel version 2.6.16.
+ * External PHY support.
+
+Version	1.0.0		Dec. 20, 2005
+ * New release.
+
+================
+Prerequisites
+================
+
+Prepare to build the driver, you need the Linux kernel sources installed on the
+build machine, and make sure that the version of the running kernel must match
+the installed kernel sources. If you don't have the kernel sources, you can get
+it from www.kernel.org or contact to your Linux distributor. If you don't know
+how to do, please refer to KERNEL-HOWTO.
+
+Note: Please make sure the kernel is built with one of the "Support for
+       Host-side, EHCI, OHCI, or UHCI" option support.
+
+
+===========================
+Conditional Compilation Flag
+===========================
+[AX_FORCE_BUFF_ALIGN]
+Description:
+       There are alignment issues of USB buffer in some USB host controllers.
+       Turn on this flag if the implementation of your USB host controller
+       cannot handle non-double word aligned buffer.
+       When turn on this flag, driver will fixup egress packet aligned on double
+       word boundary before deliver to USB host controller.
+Setting:
+	1 -> Enable TX buffers forced on double word alignment.
+	0 -> Disable TX buffers forced on double word alignment.
+Default:
+	0
+
+
+================
+Getting Start
+================
+
+1. Extract the compressed driver source file to your template directory by the
+   following command:
+
+	[root@localhost template]# tar -xf DRIVER_SOURCE_PACKAGE.tar.bz2
+
+2. Now, the driver source files should be extracted under the current directory.
+   Executing the following command to compile the driver:
+ 
+	[root@localhost template]# make
+			
+3. If the compilation is well, the asix.ko will be created under the current
+   directory.
+ 
+4. If you want to use modprobe command to mount the driver, executing the
+   following command to install the driver into your Linux:
+
+	[root@localhost template]# make install
+
+
+================
+Usage
+================
+
+1. If you want to load the driver manually, go to the driver directory and
+   execute the following commands:
+
+	[root@localhost template]# insmod asix.ko
+
+2. If you had installed the driver during driver compilation, then you can use
+   the following command to load the driver automatically.
+
+	[root@localhost anywhere]# modprobe asix
+
+If you want to unload the driver, just executing the following command:
+
+	[root@localhost anywhere]# rmmod asix
+

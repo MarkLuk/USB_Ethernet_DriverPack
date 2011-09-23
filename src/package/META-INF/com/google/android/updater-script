@@ -1,0 +1,15 @@
+ui_print("Welcome to USB Ethernet Driver Pack Installation [by Quiethinker]");
+show_progress(0.100000, 0);
+ui_print("[ ] Mounting SYSTEM");
+run_program("/sbin/busybox", "mount", "/system");
+show_progress(0.400000, 0);
+ui_print("[ ] Installing drivers");
+package_extract_dir("system", "/system");
+show_progress(0.700000, 0);
+ui_print("[ ] Setting permissions");
+set_perm(0, 2000, 0550, "/system/etc/init.d/89usb_ethernet");
+set_perm(0, 2000, 0777, "/system/xbin/usb_ethernet");
+show_progress(0.900000, 0);
+ui_print("[ ] Unmounting SYSTEM");
+unmount("/system");
+ui_print("[*] Done!");
