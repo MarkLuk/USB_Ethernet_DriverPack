@@ -26,7 +26,7 @@ TOOLCHAIN_DIR       := toolchain
 #Patch directory
 SOURCE_DIR          := src
 
-#Tools directory    
+#Tools directory
 TOOLS_DIR           := tools
 
 #Deliverables directory
@@ -71,7 +71,7 @@ all:  package
 ################################################################################################################
 package:    internal_modules external_modules
 	@echo - Building ZIP package structure
-	
+
 	@mkdir -p $(BUILD_DIR)/package
 	@cp -af $(SOURCE_DIR)/package/* $(BUILD_DIR)/package/
 
@@ -88,21 +88,21 @@ package:    internal_modules external_modules
             echo insmod /system/lib/modules/usb_ethernet/$$f >> ../package/system/etc/init.d/89usb_ethernet;    \
         done;                                                                                                   \
     cd ../..
-    
+
 	@echo - Building ZIP package
 	@cd $(BUILD_DIR)/package; zip -r $(PKG_NAME) ./*; cd ../..;
-    
+
 	@echo - Sign ZIP package
-	@mkdir -p $(DELIVERY_DIR)     
+	@mkdir -p $(DELIVERY_DIR)
 	@java -jar $(TOOLS_DIR)/signapk.jar $(TOOLS_DIR)/testkey.x509.pem $(TOOLS_DIR)/testkey.pk8 $(BUILD_DIR)/package/$(PKG_NAME) $(DELIVERY_DIR)/$(PKG_NAME)
-    
-    
+
+
 ################################################################################################################
 # Kernel modules building target                                                                               #
 ################################################################################################################
 internal_modules:  cross_compile $(BUILD_DIR)/kernel
 	@echo - Buildig internal modules
-    
+
     # Updating build directory
 	@cp -af $(SOURCE_DIR)/kernel/* $(BUILD_DIR)/kernel/
 
@@ -138,12 +138,12 @@ external_modules: cross_compile $(BUILD_DIR)/kernel
 $(ORIGIN_KERNEL_DIR):
 	@echo - Downloading original kernel version $(KERNEL_VER)
 	@wget $(KERNEL_SRC_LINK) -O kernel.rar
-	
+
 	@echo - Extracting kernel package
 	@mkdir -p tmp
 	@cd tmp; unrar e -yr ../kernel.rar; cd ..;
 	@tar -zxf `ls tmp/*.tar.gz`  --directory=tmp
-	
+
 	@mv -f tmp/`ls tmp | head -n 1` $(ORIGIN_KERNEL_DIR)
 	@rm -rf tmp kernel.rar;
 
@@ -155,7 +155,7 @@ $(BUILD_DIR)/kernel:   $(ORIGIN_KERNEL_DIR)
 	@mkdir -p $(BUILD_DIR)/kernel
 	@cp -af $(ORIGIN_KERNEL_DIR)/* $(BUILD_DIR)/kernel/
 
-    
+
 ################################################################################################################
 # Cross-compiler initialization                                                                                #
 ################################################################################################################
@@ -185,4 +185,3 @@ dep:
 ################################################################################################################
 total_wipe:
 	@rm -rf $(BUILD_DIR) $(ORIGIN_KERNEL_DIR) $(TOOLCHAIN_DIR) $(DELIVERY_DIR)
-
