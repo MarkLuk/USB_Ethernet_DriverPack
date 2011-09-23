@@ -3,7 +3,7 @@
 ################################################################################################################
 
 #Package version
-PKG_VER             := 0.0.1
+PKG_VER             := 0.1
 
 #Package name
 PKG_NAME            := USB_Ethernet_DriverPack.v$(PKG_VER).[Quiethinker].zip
@@ -71,7 +71,8 @@ all:  package
 ################################################################################################################
 package:    internal_modules external_modules
 	@echo - Building ZIP package structure
-
+	
+	@mkdir -p $(BUILD_DIR)/package
 	@cp -af $(SOURCE_DIR)/package/* $(BUILD_DIR)/package/
 
 	@mkdir -p $(BUILD_DIR)/package/system/etc/init.d/
@@ -142,8 +143,8 @@ $(ORIGIN_KERNEL_DIR):
 	@mkdir -p tmp
 	@cd tmp; unrar e -yr ../kernel.rar; cd ..;
 	@tar -zxf `ls tmp/*.tar.gz`  --directory=tmp
-	@mkdir -p $(ORIGIN_KERNEL_DIR)
-	@cp -af tmp/`ls tmp | head -n 1`/* $(ORIGIN_KERNEL_DIR)
+	
+	@mv -f tmp/`ls tmp | head -n 1` $(ORIGIN_KERNEL_DIR)
 	@rm -rf tmp kernel.rar;
 
 ################################################################################################################
