@@ -1,0 +1,17 @@
+General
+--------
+This repository contains USB to Ethernet driver pack.
+
+How to Build
+-------------
+1. To make dependencies execute 'make dep'
+2. To make the driver pack execute 'make'
+    2.1 The script will download kernel sources and ARM toolchain so it can take a while.
+    2.2 The ZIP package will be located at 'deliverables' folder
+    
+Adding new driver to package
+----------------------------
+1. Add driver source to separate folder at 'src/drivers/YOUR_DRIVER'
+2. Make sure that the Makefile uses 'KDIR' variable for pointing to kernel path
+3. Thats it.
+    
